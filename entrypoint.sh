@@ -61,7 +61,7 @@ for file in $(find "$1/$folder" -maxdepth 1 - 1 -type f -name '*.md' -execdir ba
     printf '%s\n' "$file"
     else
     debug "Copying $file"
-    cat "$1/$folder/$file" >> wiki_test.md
+    cat "$1/$folder/$file" >> wiki_test1.md
     echo "\n" >> wiki_test.md
     cp wiki_test.md "$tmp_dir"
     fi
