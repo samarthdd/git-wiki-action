@@ -56,13 +56,13 @@ tmp_dir=$(mktemp -d -t ci-XXXXXXXXXX)
 debug "Enumerating contents of $1"
 STRING="Creating_OVA"
 for folder in $(find $1 -maxdepth 1 -execdir basename '{}' ';'); do
+  printf '%s\n' "$folder"
 for file in $(find "$1/$folder" -maxdepth 1 -type f -name '*.md' -execdir basename '{}' ';'); do
     if [[ "$file" == *"$STRING"* ]];then
     printf '%s\n' "$file"
     else
     debug "Copying $file"
     cat "$1/$folder/$file" >> wiki_test1.md
-    echo "\n" >> wiki_test1.md
     cp wiki_test1.md "$tmp_dir"
     fi
 done
