@@ -44,7 +44,7 @@ GIT_REPOSITORY_URL="https://${GH_PERSONAL_ACCESS_TOKEN}@github.com/$GITHUB_REPOS
 
 debug "Checking out wiki repository"
 tmp_dir=$(mktemp -d -t ci-XXXXXXXXXX)
-n=ls -1q | wc -l
+
 (
     cd "$tmp_dir" || exit 1
     git init
