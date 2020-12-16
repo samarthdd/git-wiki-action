@@ -56,7 +56,7 @@ tmp_dir=$(mktemp -d -t ci-XXXXXXXXXX)
 debug "Enumerating contents of $1"
 STRING="readme"
 for folder in $(find $1 -maxdepth 1 -execdir basename '{}' ';'); do
-for file in $(find "$1/$folder" -maxdepth 1 - 1 -type f -name '*.md' -execdir basename '{}' ';'); do
+for file in $(find "$1/$folder" -maxdepth 1 -type f -name '*.md' -execdir basename '{}' ';'); do
     if [[ "$file" == *"$STRING"* ]];then
     printf '%s\n' "$file"
     else
