@@ -54,7 +54,7 @@ tmp_dir=$(mktemp -d -t ci-XXXXXXXXXX)
 ) || exit 1
 
 debug "Enumerating contents of $1"
-STRING="readmeh"
+STRING="Creating_OVA"
 for folder in $(find $1 -maxdepth 1 -execdir basename '{}' ';'); do
 for file in $(find "$1/$folder" -maxdepth 1 -type f -name '*.md' -execdir basename '{}' ';'); do
     if [[ "$file" == *"$STRING"* ]];then
