@@ -57,6 +57,9 @@ for file in $(find $1 -maxdepth 1 -type f -name '*.md' -execdir basename '{}' ';
     debug "Copying $file"
     #cd "$tmp_dir" || exit 1
     cat "$1/$file" >> wiki.md
+    cat "$1/$file" >> wiki.txt
+    header=${f##*/} header=${header^}
+    printf '%s\n' 0a "# $header" "" . w | ed -s "$f"
     #cd ..
     cp wiki.md "$tmp_dir"
 done
