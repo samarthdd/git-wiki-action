@@ -57,7 +57,7 @@ for file in $(find $1 -maxdepth 1 -type f -name '*.md' -execdir basename '{}' ';
     debug "Copying $file"
     #cd "$tmp_dir" || exit 1
     cat "$1/$file" >> wiki.txt
-    cd ..
+    #cd ..
     #cp "$1/$file" "$tmp_dir"
 done
 
