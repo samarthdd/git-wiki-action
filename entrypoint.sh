@@ -53,22 +53,21 @@ tmp_dir=$(mktemp -d -t ci-XXXXXXXXXX)
 ) || exit 1
 
 debug "Enumerating contents of $1"
-for file in $(find $1 -maxdepth 1 -type f -name '*.md' -execdir basename '{}' ';'); do
+for folder in $(find $1 -maxdepth 1 -execdir basename '{}' ';'); do
+for file in $(find "$1/$folder" -maxdepth 1 -type f -name '*.md' -execdir basename '{}' ';'); do
     debug "Copying $file"
     #cd "$tmp_dir" || exit 1
-    cat "$1/$file" >> wiki.md
-    cat "$1/$file" >> wiki.txt
-    echo "\n" >> wiki.md
-    echo "\n" >> wiki.txt
-
+    cat "$1/$folder/$file" >> wiki_test.md
+    #cat "$1/$file" >> wiki.txt
+    echo "\n" >> wiki_test.md
     #cd ..
-    cp wiki.md "$tmp_dir"
+    cp wiki_test.md "$tmp_dir"
 done
-
+done
 debug "Committing and pushing changes"
 (
     cd "$tmp_dir" || exit 1
-    mv wiki.txt wiki2.md
+    #mv wiki.txt wiki2.md
     git add .
     git commit -m "$WIKI_COMMIT_MESSAGE"
     git push --set-upstream "$GIT_REPOSITORY_URL" master
