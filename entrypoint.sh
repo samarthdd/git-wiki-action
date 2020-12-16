@@ -58,7 +58,7 @@ STRING="Creating_OVA"
 printf 'Enumerating contents of' "$1"
 for folder in $(find $1 -maxdepth 1 -execdir basename '{}' ';'); do
   printf '%s\n' "$folder"
-for file in $(find "$1/$folder" -maxdepth 0 -type f -name '*.md' -execdir basename '{}' ';'); do
+for file in $(find "$1/$folder" -maxdepth 2 -type f -name '*.md' -execdir basename '{}' ';'); do
     if [[ "$file" == *"$STRING"* ]];then
     printf '%s\n' "$file"
     else
