@@ -53,17 +53,17 @@ tmp_dir=$(mktemp -d -t ci-XXXXXXXXXX)
 ) || exit 1
 
 debug "Enumerating contents of $1"
-cat > "$tmp_dir"/wiki.txt
 for file in $(find $1 -maxdepth 1 -type f -name '*.md' -execdir basename '{}' ';'); do
     debug "Copying $file"
-    cat "$1/$file" >> "$tmp_dir"/wiki.txt
+    cd "$tmp_dir" || exit 1
+    cat "$1/$file" >> wiki.txt
+    cd ..
     #cp "$1/$file" "$tmp_dir"
 done
 
 debug "Committing and pushing changes"
 (
     cd "$tmp_dir" || exit 1
-
     git add .
     git commit -m "$WIKI_COMMIT_MESSAGE"
     git push --set-upstream "$GIT_REPOSITORY_URL" master
