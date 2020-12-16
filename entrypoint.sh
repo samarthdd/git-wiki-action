@@ -56,7 +56,7 @@ debug "Enumerating contents of $1"
 for file in $(find $1 -maxdepth 1 -type f -name '*.md' -execdir basename '{}' ';'); do
     debug "Copying $file"
     #cd "$tmp_dir" || exit 1
-    cat "$1/$file" >> wiki.txt
+    cat "$1/$file" >> wiki.md
     #cd ..
     #cp "$1/$file" "$tmp_dir"
 done
