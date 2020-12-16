@@ -57,10 +57,10 @@ debug "Enumerating contents of $1"
 STRING="Creating_OVA"
 base=$1
 printf 'Enumerating contents of' "$1"
-for folder in $(find $1 -maxdepth 1 -execdir basename '{}' ';' | sort -z )  ; do
+for folder in $(find $1 -maxdepth 1 -execdir basename '{}' ';' | sort )  ; do
   printf '%s\n' "$folder"
 
-for file in $(find "$base/$folder" -maxdepth 1 -type f -name '*.md' -execdir basename '{}' ';' | sort -z ); do
+for file in $(find "$base/$folder" -maxdepth 1 -type f -name '*.md' -execdir basename '{}' ';' | sort ); do
     if [[ "$file" == *"$STRING"* ]];then
     printf '%s\n' "$file"
     else
