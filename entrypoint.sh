@@ -59,8 +59,8 @@ base=$1
 printf 'Enumerating contents of' "$1"
 for folder in $(find $1 -maxdepth 1 -execdir basename '{}' ';'); do
   printf '%s\n' "$folder"
-  for i in $(ls -1 * | sort -n -type f -name '*.md'  -execdir basename '{}' ';') ;
-#for file in $(find "$base/$folder" -maxdepth 1 -type f -name '*.md' -execdir basename '{}' ';'); do
+
+for file in $(find "$base/$folder" | sort -z  | -maxdepth 1 -type f -name '*.md' -execdir basename '{}' ';'); do
     if [[ "$file" == *"$STRING"* ]];then
     printf '%s\n' "$file"
     else
