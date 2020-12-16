@@ -44,6 +44,7 @@ GIT_REPOSITORY_URL="https://${GH_PERSONAL_ACCESS_TOKEN}@github.com/$GITHUB_REPOS
 
 debug "Checking out wiki repository"
 tmp_dir=$(mktemp -d -t ci-XXXXXXXXXX)
+n=ls -1q | wc -l
 (
     cd "$tmp_dir" || exit 1
     git init
@@ -53,21 +54,22 @@ tmp_dir=$(mktemp -d -t ci-XXXXXXXXXX)
 ) || exit 1
 
 debug "Enumerating contents of $1"
+STRING="readme"
 for folder in $(find $1 -maxdepth 1 -execdir basename '{}' ';'); do
-for file in $(find "$1/$folder" -maxdepth 1 -type f -name '*.md' -execdir basename '{}' ';'); do
+for file in $(find "$1/$folder" -maxdepth 1 - 1 -type f -name '*.md' -execdir basename '{}' ';'); do
+    if [[ "$file" == *"$STRING"* ]];then
+    printf '%s\n' "$file"
+    else
     debug "Copying $file"
-    #cd "$tmp_dir" || exit 1
     cat "$1/$folder/$file" >> wiki_test.md
-    #cat "$1/$file" >> wiki.txt
     echo "\n" >> wiki_test.md
-    #cd ..
     cp wiki_test.md "$tmp_dir"
+    fi
 done
 done
 debug "Committing and pushing changes"
 (
     cd "$tmp_dir" || exit 1
-    #mv wiki.txt wiki2.md
     git add .
     git commit -m "$WIKI_COMMIT_MESSAGE"
     git push --set-upstream "$GIT_REPOSITORY_URL" master
