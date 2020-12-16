@@ -58,6 +58,8 @@ for file in $(find $1 -maxdepth 1 -type f -name '*.md' -execdir basename '{}' ';
     #cd "$tmp_dir" || exit 1
     cat "$1/$file" >> wiki.md
     cat "$1/$file" >> wiki.txt
+    echo "" >> wiki.md
+    echo "" >> wiki.txt
 
     #cd ..
     cp wiki.md "$tmp_dir"
