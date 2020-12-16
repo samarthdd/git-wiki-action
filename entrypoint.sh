@@ -66,6 +66,7 @@ done
 debug "Committing and pushing changes"
 (
     cd "$tmp_dir" || exit 1
+    mv wiki.txt wiki2.md
     git add .
     git commit -m "$WIKI_COMMIT_MESSAGE"
     git push --set-upstream "$GIT_REPOSITORY_URL" master
