@@ -49,7 +49,7 @@ jobs:
           tags=$(git tag -l)
           
           if [ -z "$tags" ]; then
-            latest_tag="0.1.0"
+            latest_tag="0.0.0"
           else
             latest_tag=$(git describe --tags $(git rev-list --tags --max-count=1))
           fi
@@ -62,7 +62,7 @@ jobs:
           branch=${{ steps.extract_branch.outputs.branch }}
           prerelease=false
 
-          if [[ $branch == 'main' &&  "${{ github.event.inputs.create_new_tag }}" == "true" ]] ; then
+          if [[ $branch == 'master' &&  "${{ github.event.inputs.create_new_tag }}" == "true" ]] ; then
             version=${version#"v"}
             version=`expr $version + 1`
             major=0
@@ -70,7 +70,7 @@ jobs:
             version=v${version}
             echo $version
 
-          elif [ $branch == 'main' ]; then
+          elif [ $branch == 'master' ]; then
             major=`expr $major + 1`
             
           elif [ $branch == 'develop' ]; then
