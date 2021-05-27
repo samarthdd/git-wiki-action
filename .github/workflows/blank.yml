@@ -60,7 +60,9 @@ jobs:
 
               pull_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
               echo $pull_number
-              curl  --request POST  --data  '{"name":"namedd"}' https://api.github.com/repos/samarthdd/git-wiki-action/labels
+              
+              curl -X POST  -H "Accept: application/vnd.github.v3+json" -H"authorization: Bearer ${{ secrets.GITHUBPAT }}" https://api.github.com/repos/samarthdd/git-wiki-action/labels -d '{"name":"namedd"}'
+              
               gh pr edit $pull_number  --add-label "name"
 
               echo "testing done"
@@ -74,8 +76,8 @@ jobs:
               pull_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
               echo $pull_number
               
-              curl --request POST  --data  '{"name":"ddd"}' https://api.github.com/repos/samarthdd/git-wiki-action/labels
-        
+              curl -X POST  -H "Accept: application/vnd.github.v3+json" -H"authorization: Bearer ${{ secrets.GITHUBPAT }}" https://api.github.com/repos/samarthdd/git-wiki-action/labels -d '{"name":"namedd"}'
+              
               gh pr edit $pull_number  --add-label "name"
 
               echo "testing done"
