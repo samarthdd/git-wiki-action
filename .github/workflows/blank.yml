@@ -61,7 +61,7 @@ jobs:
               pull_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
               echo $pull_number
               
-              gh pr edit $pull_number edit  --add-label "bug,help wanted" --remove-label "core"
+              gh pr edit $pull_number  --add-label "bug,help wanted"
 
               echo "testing done"
           fi
