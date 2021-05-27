@@ -97,6 +97,8 @@ jobs:
           echo "new tag is : $tag_name"
           echo ::set-output name=prerelease::$prerelease
           echo ::set-output name=tag_id::$tag_name
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Release snapshot
         id: release-snapshot
         uses: actions/create-release@latest
@@ -107,3 +109,4 @@ jobs:
           release_name: ${{ steps.tagging.outputs.tag_id }}
           draft: false
           prerelease: ${{ steps.tagging.outputs.prerelease }}
+
