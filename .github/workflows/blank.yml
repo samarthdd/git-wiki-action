@@ -61,9 +61,9 @@ jobs:
               pull_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
               echo $pull_number
               
-              curl -X POST  -H "Accept: application/vnd.github.v3+json" -H"authorization: Bearer ${{ secrets.GITHUBPAT }}" https://api.github.com/repos/samarthdd/git-wiki-action/labels -d '{"name":"namesssdd"}'
+              curl -X POST  -H "Accept: application/vnd.github.v3+json" -H"authorization: Bearer ${{ secrets.GITHUBPAT }}" https://api.github.com/repos/samarthdd/git-wiki-action/labels -d '{"name":"sss"}'
               
-              gh pr edit $pull_number  --add-label "name"
+              gh pr edit $pull_number  --add-label "sss"
 
               echo "testing done"
           fi
@@ -76,9 +76,9 @@ jobs:
               pull_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
               echo $pull_number
               
-              curl -X POST  -H "Accept: application/vnd.github.v3+json" -H"authorization: Bearer ${{ secrets.GITHUBPAT }}" https://api.github.com/repos/samarthdd/git-wiki-action/labels -d '{"name":"namejjjdd"}'
+              curl -X POST  -H "Accept: application/vnd.github.v3+json" -H"authorization: Bearer ${{ secrets.GITHUBPAT }}" https://api.github.com/repos/samarthdd/git-wiki-action/labels -d '{"name":"sssss"}'
               
-              gh pr edit $pull_number  --add-label "name"
+              gh pr edit $pull_number  --add-label "sssss"
 
               echo "testing done"
           fi
