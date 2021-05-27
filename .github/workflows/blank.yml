@@ -60,8 +60,9 @@ jobs:
 
               pull_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
               echo $pull_number
+              curl -X POST  -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/$repo_name/labels -d '{"name":"name"}'
               
-              gh pr edit $pull_number  --add-label "bug,help wanted"
+              gh pr edit $pull_number  --add-label "name"
 
               echo "testing done"
           fi
