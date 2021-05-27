@@ -6,7 +6,6 @@ function debug() {
     echo "::debug file=${BASH_SOURCE[0]},line=${BASH_LINENO[0]}::$1"
 }
 
-
 function warning() {
     echo "::warning file=${BASH_SOURCE[0]},line=${BASH_LINENO[0]}::$1"
 }
