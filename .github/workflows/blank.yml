@@ -107,6 +107,7 @@ jobs:
         run: |
           if [[ "${{ github.event.pull_request.merged }}" == "true" ]] ; then
                   base_branch=${{ github.event.pull_request.head.ref }}
+                  color="#$(openssl rand -hex 3)"
                   echo $base_branch
                   echo ${GITHUB_REF#refs/heads/}
                   tag_name=${{ steps.tagging.outputs.tag_id }}
@@ -119,7 +120,7 @@ jobs:
                   pull_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
                   echo $pull_number
 
-                  curl -X POST  -H "Accept: application/vnd.github.v3+json" -H"authorization: Bearer ${{ secrets.GITHUBPAT }}" https://api.github.com/repos/samarthdd/git-wiki-action/labels -d '{"name": "'"$tag_name"'" }'
+                  curl -X POST  -H "Accept: application/vnd.github.v3+json" -H"authorization: Bearer ${{ secrets.GITHUBPAT }}" https://api.github.com/repos/samarthdd/git-wiki-action/labels -d '{"name": "'"$tag_name"'" ,"color": "'"$color"'"}'
 
                   gh pr edit $pull_number  --add-label $tag_name
 
