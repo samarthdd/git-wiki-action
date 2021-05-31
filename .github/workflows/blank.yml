@@ -106,6 +106,8 @@ jobs:
       - name : tag PR on merge
         run: |
           if [[ "${{ github.event.pull_request.merged }}" == "true" ]] ; then
+                  base_branch=${{ github.event.pull_request.head.ref }}
+                  echo $base_branch
                   tag_name=$(curl -sL https://api.github.com/repos/$repo_name/releases | jq -r ".[0].tag_name")
 
                   echo "testing123"
