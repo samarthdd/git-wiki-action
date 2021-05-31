@@ -61,14 +61,14 @@ jobs:
           minor=`echo $latest_tag | cut -d. -f3`
           branch=${{ steps.extract_branch.outputs.branch }}
           prerelease=false
-          if [[ $branch == 'main' &&  "${{ github.event.inputs.create_new_tag }}" == "true" ]] ; then
+          if [[ $branch == 'master' &&  "${{ github.event.inputs.create_new_tag }}" == "true" ]] ; then
             version=${version#"v"}
             version=`expr $version + 1`
             major=0
             minor=0
             version=v${version}
             echo $version
-          elif [ $branch == 'main' ]; then
+          elif [ $branch == 'master' ]; then
             prerelease=true
             minor=0
             major=`expr $major + 1`
