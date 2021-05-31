@@ -100,10 +100,11 @@ jobs:
           prerelease: ${{ steps.tagging.outputs.prerelease }}
       - name : tag PR on merge
         run: |
-          tag_name = $(curl -sL https://api.github.com/repos/$repo_name/releases | jq -r ".[0].tag_name")
           if [[ "${{ github.event.pull_request.merged }}" == "true" ]] ; then
+                  tag_name=$(curl -sL https://api.github.com/repos/$repo_name/releases | jq -r ".[0].tag_name")
 
                   echo "testing123"
+                  echo $tag_name
                   PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
                   echo $PR_NUMBER
 
