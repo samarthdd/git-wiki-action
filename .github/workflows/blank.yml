@@ -52,6 +52,11 @@ jobs:
             latest_tag=$(curl -sL https://api.github.com/repos/$repo_name/releases | jq -r ".[0].tag_name")
           fi
           
+          PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
+          echo $PR_NUMBER
+          pull_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
+          echo $pull_number
+          
           
           
           
