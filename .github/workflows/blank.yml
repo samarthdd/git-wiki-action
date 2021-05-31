@@ -107,7 +107,7 @@ jobs:
         run: |
           if [[ "${{ github.event.pull_request.merged }}" == "true" ]] ; then
                   base_branch=${{ github.event.pull_request.head.ref }}
-                  color="#$(openssl rand -hex 3)"
+                  color="$(openssl rand -hex 3)"
                   echo $base_branch
                   echo ${GITHUB_REF#refs/heads/}
                   tag_name=${{ steps.tagging.outputs.tag_id }}
