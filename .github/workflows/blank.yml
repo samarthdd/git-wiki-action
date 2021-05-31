@@ -5,10 +5,10 @@ name: Auto tagging and release
 # Controls when the action will run.
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
-  push:
-    branches:
-      - master
-      - develop
+#   push:
+#     branches:
+#       - master
+#       - develop
   pull_request:
     types: [closed]
     paths-ignore:
@@ -109,7 +109,7 @@ jobs:
                   base_branch=${{ github.event.pull_request.head.ref }}
                   echo $base_branch
                   echo ${GITHUB_REF#refs/heads/}
-                  tag_name=$(curl -sL https://api.github.com/repos/$repo_name/releases | jq -r ".[0].tag_name")
+                  tag_name=${{ steps.tagging.outputs.tag_id }}
 
                   echo "testing123"
                   echo $tag_name
