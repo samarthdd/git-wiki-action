@@ -10,7 +10,7 @@ on:
       - master
       - develop
   pull_request:
-    types: [opened, closed]
+    types: [closed]
     paths-ignore:
       - '.github/workflows/auto_tagging.yml'
 
@@ -100,7 +100,7 @@ jobs:
           prerelease: ${{ steps.tagging.outputs.prerelease }}
       - name : tag PR on merge
         run: |
-          tag_name: ${{ steps.tagging.outputs.tag_id }}
+          tag_name = $(curl -sL https://api.github.com/repos/$repo_name/releases | jq -r ".[0].tag_name")
           if [[ "${{ github.event.pull_request.merged }}" == "true" ]] ; then
 
                   echo "testing123"
