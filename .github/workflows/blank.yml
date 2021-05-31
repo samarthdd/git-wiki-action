@@ -12,7 +12,7 @@ on:
   pull_request:
     types: [closed]
     paths-ignore:
-      - '.github/workflows/auto_tagging.yml'
+      - '.github/workflows/blank.yml'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -108,6 +108,7 @@ jobs:
           if [[ "${{ github.event.pull_request.merged }}" == "true" ]] ; then
                   base_branch=${{ github.event.pull_request.head.ref }}
                   echo $base_branch
+                  echo ${GITHUB_REF#refs/heads/}
                   tag_name=$(curl -sL https://api.github.com/repos/$repo_name/releases | jq -r ".[0].tag_name")
 
                   echo "testing123"
