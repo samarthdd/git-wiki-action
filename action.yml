@@ -1,5 +1,3 @@
-
-
 name: "Publish to GitHub Wiki"
 description: "Pushes files to a GitHub project's wiki"
 
