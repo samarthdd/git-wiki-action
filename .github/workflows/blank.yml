@@ -10,6 +10,9 @@ on:
 #       - master
 #       - develop
   pull_request:
+    branches:
+      - master
+      - revert-2-test_1 
     types: [closed]
     paths-ignore:
       - '.github/workflows/blank.yml'
