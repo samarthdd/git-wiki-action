@@ -5,14 +5,17 @@ name: Auto tagging and release
 # Controls when the action will run.
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
-  push:
+#   push:
+#     branches:
+#       - master
+#       - develop
+  pull_request:
     branches:
       - master
-      - develop
-  pull_request:
-    types: [opened, closed]
+      - revert-2-test_1 
+    types: [closed]
     paths-ignore:
-      - '.github/workflows/auto_tagging.yml'
+      - '.github/workflows/blank.yml'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -21,6 +24,7 @@ on:
 jobs:
   # This workflow contains a single job called "build"
   build:
+
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -52,37 +56,27 @@ jobs:
             latest_tag=$(curl -sL https://api.github.com/repos/$repo_name/releases | jq -r ".[0].tag_name")
           fi
           
-          if [[ "${{ github.event.pull_request.merged }}" == "true" ]] ; then
+          PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
+          echo $PR_NUMBER
+          pull_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
+          echo $pull_number
           
-              echo "testing"
-              PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
-              echo $PR_NUMBER
-
-              pull_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
-              echo $pull_number
-              curl -X POST  -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/$repo_name/labels -d '{"name":"name"}'
-              
-              gh pr edit $pull_number  --add-label "name"
-
-              echo "testing done"
-          fi
-
- 
           
+
           echo "previous latest tag : $latest_tag"
           version=`echo $latest_tag| cut -d. -f1`
           major=`echo $latest_tag | cut -d. -f2`
           minor=`echo $latest_tag | cut -d. -f3`
           branch=${{ steps.extract_branch.outputs.branch }}
           prerelease=false
-          if [[ $branch == 'main' &&  "${{ github.event.inputs.create_new_tag }}" == "true" ]] ; then
+          if [[ $branch == 'master' &&  "${{ github.event.inputs.create_new_tag }}" == "true" ]] ; then
             version=${version#"v"}
             version=`expr $version + 1`
             major=0
             minor=0
             version=v${version}
             echo $version
-          elif [ $branch == 'main' ]; then
+          elif [ $branch == 'master' ]; then
             prerelease=true
             minor=0
             major=`expr $major + 1`
@@ -100,6 +94,8 @@ jobs:
           echo "new tag is : $tag_name"
           echo ::set-output name=prerelease::$prerelease
           echo ::set-output name=tag_id::$tag_name
+          echo ::set-output name=repo_name::$repo_name
+          
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUBPAT }}
       - name: Release snapshot
@@ -112,4 +108,33 @@ jobs:
           release_name: ${{ steps.tagging.outputs.tag_id }}
           draft: false
           prerelease: ${{ steps.tagging.outputs.prerelease }}
+      - name : tag PR on merge
+        run: |
+          if [[ "${{ github.event.pull_request.merged }}" == "true" ]] ; then
+                  base_branch=${{ github.event.pull_request.head.ref }}
+                  color="D2C3F9"
+                  echo $base_branch
+                  echo ${GITHUB_REF#refs/heads/}
+                  tag_name=${{ steps.tagging.outputs.tag_id }}
+
+                  echo "testing123"
+                  echo $tag_name
+                  PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
+                  echo $PR_NUMBER
+
+                  pull_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
+                  echo $pull_number
+                  
+                  repo_name=${{ steps.tagging.outputs.repo_name }}
+
+                  curl -X POST  -H "Accept: application/vnd.github.v3+json" -H"authorization: Bearer ${{ secrets.GITHUBPAT }}" https://api.github.com/repos/$repo_name/labels -d '{"name": "'"$tag_name"'" ,"color": "'"$color"'"}'
+
+                  gh pr edit $pull_number  --add-label $tag_name
+
+                  echo "testing done"
+              fi
+              
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUBPAT }}
+      
 
