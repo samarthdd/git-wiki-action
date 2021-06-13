@@ -7,7 +7,7 @@ on:
   # Triggers the workflow on push or pull request events but only for the main branch
   pull_request:
     branches:
-      - main
+      - master
       - develop
     types: [closed]
     paths-ignore:
@@ -61,7 +61,7 @@ jobs:
           branch=${{ steps.extract_branch.outputs.branch }}
           prerelease=false
 
-          if [[ $branch == 'main' &&  "${{ github.event.inputs.create_new_tag }}" == "true" ]] ; then
+          if [[ $branch == 'master' &&  "${{ github.event.inputs.create_new_tag }}" == "true" ]] ; then
             version=${version#"v"}
             version=`expr $version + 1`
             major=0
@@ -69,7 +69,7 @@ jobs:
             version=v${version}
             echo $version
 
-          elif [ $branch == 'main' ]; then
+          elif [ $branch == 'master' ]; then
             prerelease=true
             minor=0
             major=`expr $major + 1`
