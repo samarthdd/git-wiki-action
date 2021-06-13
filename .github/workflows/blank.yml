@@ -50,7 +50,7 @@ jobs:
             latest_tag="v0.0.0"
           else
             repo_name=$(git config --get remote.origin.url | sed 's/.*\/\([^ ]*\/[^.]*\).*/\1/')
-            latest_tag=$(curl -sL https://api.github.com/repos/$repo_name/tags | jq -r ".[0].tag_name")
+            latest_tag=$(curl -sL https://api.github.com/repos/$repo_name/tags | jq -r ".[0].name")
           fi
           
           echo "previous latest tag : $latest_tag"
@@ -75,7 +75,7 @@ jobs:
             major=`expr $major + 1`
             
           elif [ $branch == 'develop' ]; then
-              prerelease=true
+              #prerelease=true
               echo $branch
               if [ -z "$minor" ]; then
                  minor=1
