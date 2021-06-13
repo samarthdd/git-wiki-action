@@ -93,14 +93,17 @@ jobs:
 
       - name: Release snapshot
         id: release-snapshot
-        uses: actions/create-release@latest
+        #uses: actions/create-release@latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUBPAT }}
-        with:
-          tag_name: ${{ steps.tagging.outputs.tag_id }}
-          release_name: ${{ steps.tagging.outputs.tag_id }}
-          draft: false
-          prerelease: ${{ steps.tagging.outputs.prerelease }}
+#         with:
+#           tag_name: ${{ steps.tagging.outputs.tag_id }}
+#           release_name: ${{ steps.tagging.outputs.tag_id }}
+#           draft: false
+#           prerelease: ${{ steps.tagging.outputs.prerelease }}
+        run: |
+            git tag -a ${{ steps.tagging.outputs.tag_id }} -m  " new tag ${{ steps.tagging.outputs.tag_id }} created"
+            git push --tags origin master
       - name : tag PR on merge
         run: |
           if [[ "${{ github.event.pull_request.merged }}" == "true" ]] ; then
