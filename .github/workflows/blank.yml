@@ -70,7 +70,7 @@ jobs:
             echo $version
 
           elif [ $branch == 'master' ]; then
-            prerelease=true
+            #prerelease=true
             minor=0
             major=`expr $major + 1`
             
