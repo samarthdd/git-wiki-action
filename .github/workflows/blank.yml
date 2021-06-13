@@ -5,17 +5,13 @@ name: Auto tagging and release
 # Controls when the action will run.
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
-#   push:
-#     branches:
-#       - master
-#       - develop
   pull_request:
     branches:
-      - master
-      - revert-2-test_1 
+      - main
+      - develop
     types: [closed]
     paths-ignore:
-      - '.github/workflows/blank.yml'
+      - '.github/workflows/auto_tagging.yml'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -24,7 +20,6 @@ on:
 jobs:
   # This workflow contains a single job called "build"
   build:
-
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -42,9 +37,11 @@ jobs:
       - name: Form tag name
         id: tagging
         run: |
+
           git config user.name github-actions@github.com
           git config user.email github-actions
           git config --global http.postBuffer 1048576000
+
           git fetch --tags
           
           tags=$(git tag -l)
@@ -56,28 +53,23 @@ jobs:
             latest_tag=$(curl -sL https://api.github.com/repos/$repo_name/releases | jq -r ".[0].tag_name")
           fi
           
-          PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
-          echo $PR_NUMBER
-          pull_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
-          echo $pull_number
-          
-          
-          
-          
           echo "previous latest tag : $latest_tag"
           version=`echo $latest_tag| cut -d. -f1`
           major=`echo $latest_tag | cut -d. -f2`
           minor=`echo $latest_tag | cut -d. -f3`
+
           branch=${{ steps.extract_branch.outputs.branch }}
           prerelease=false
-          if [[ $branch == 'master' &&  "${{ github.event.inputs.create_new_tag }}" == "true" ]] ; then
+
+          if [[ $branch == 'main' &&  "${{ github.event.inputs.create_new_tag }}" == "true" ]] ; then
             version=${version#"v"}
             version=`expr $version + 1`
             major=0
             minor=0
             version=v${version}
             echo $version
-          elif [ $branch == 'master' ]; then
+
+          elif [ $branch == 'main' ]; then
             prerelease=true
             minor=0
             major=`expr $major + 1`
@@ -91,14 +83,14 @@ jobs:
                   minor=`expr $minor + 1`
               fi
           fi
+
           tag_name=$version.$major.$minor
           echo "new tag is : $tag_name"
+
           echo ::set-output name=prerelease::$prerelease
           echo ::set-output name=tag_id::$tag_name
           echo ::set-output name=repo_name::$repo_name
-          
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUBPAT }}
+
       - name: Release snapshot
         id: release-snapshot
         uses: actions/create-release@latest
@@ -112,16 +104,12 @@ jobs:
       - name : tag PR on merge
         run: |
           if [[ "${{ github.event.pull_request.merged }}" == "true" ]] ; then
-                  base_branch=${{ github.event.pull_request.head.ref }}
-                  color="D2C3F9"
-                  echo $base_branch
-                  echo ${GITHUB_REF#refs/heads/}
+          
                   tag_name=${{ steps.tagging.outputs.tag_id }}
-
-                  echo "testing123"
                   echo $tag_name
-                  PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
-                  echo $PR_NUMBER
+                  
+                  color="D2C3F9"
+                  echo $color
 
                   pull_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
                   echo $pull_number
@@ -132,10 +120,9 @@ jobs:
 
                   gh pr edit $pull_number  --add-label $tag_name
 
-                  echo "testing done"
+                  echo "added label to PR"
               fi
               
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUBPAT }}
       
-
