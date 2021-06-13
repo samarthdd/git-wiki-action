@@ -62,7 +62,8 @@ jobs:
           echo $pull_number
           
           
-
+          
+          
           echo "previous latest tag : $latest_tag"
           version=`echo $latest_tag| cut -d. -f1`
           major=`echo $latest_tag | cut -d. -f2`
