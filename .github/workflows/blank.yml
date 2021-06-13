@@ -60,7 +60,7 @@ jobs:
 
           branch=${{ steps.extract_branch.outputs.branch }}
           prerelease=false
-
+          
           if [[ $branch == 'master' &&  "${{ github.event.inputs.create_new_tag }}" == "true" ]] ; then
             version=${version#"v"}
             version=`expr $version + 1`
@@ -102,8 +102,14 @@ jobs:
 #           draft: false
 #           prerelease: ${{ steps.tagging.outputs.prerelease }}
         run: |
-            git tag -a ${{ steps.tagging.outputs.tag_id }} -m  " new tag ${{ steps.tagging.outputs.tag_id }} created"
-            git push --tags origin master
+        
+          if [[ "${{ steps.tagging.outputs.prerelease }}" == "true" ]] ; then
+
+              gh release create  ${{ steps.tagging.outputs.tag_id }} --prerelease 
+          else
+              git tag -a ${{ steps.tagging.outputs.tag_id }} -m  " new tag ${{ steps.tagging.outputs.tag_id }} created"
+              git push --tags origin master
+          fi
       - name : tag PR on merge
         run: |
           if [[ "${{ github.event.pull_request.merged }}" == "true" ]] ; then
