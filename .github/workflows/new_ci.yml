@@ -8,7 +8,7 @@ on:
   pull_request:
     branches:
       - master
-      - develop
+      - samarthdd-patch-2
     types: [closed]
     paths-ignore:
       - '.github/workflows/auto_tagging.yml'
@@ -31,4 +31,4 @@ jobs:
         with:
            GITHUBPAT: ${{secrets.GITHUBPAT}}
            main_branch_name: "master"
-           develop_branch_name: "develop"
+           develop_branch_name: "samarthdd-patch-2"
