@@ -2,15 +2,19 @@
 
 name: Auto tagging and release testing
 # Controls when the action will run.
+# Controls when the action will run.
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
-  push:
+  pull_request:
     branches:
-      - main
+      - master
       - develop
- # Allows you to run this workflow manually from the Actions tab
+    types: [closed]
+    paths-ignore:
+      - '.github/workflows/auto_tagging.yml'
+
+  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-  # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
   build:
@@ -23,10 +27,9 @@ jobs:
       - uses: actions/checkout@v2
       - id: foo
 
-        uses: samarthdd/auto_tagging@v0.0.2
+        uses: samarthdd/tagging@v0.1.1
         with:
            token: ${{secrets.GITHUBPAT}}
            GITHUBPAT: ${{secrets.GITHUBPAT}}
-           submodules: recursive
            main_branch_name: "main"
            develop_branch_name: "develop"
