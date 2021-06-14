@@ -27,7 +27,7 @@ jobs:
       - uses: actions/checkout@v2
       - id: foo
 
-        uses: samarthdd/tagging@v0.1.4
+        uses: samarthdd/tagging@v0.1.5
         with:
            GITHUBPAT: ${{secrets.GITHUBPAT}}
            main_branch_name: "master"
