@@ -30,5 +30,5 @@ jobs:
         uses: samarthdd/tagging@v0.1.4
         with:
            GITHUBPAT: ${{secrets.GITHUBPAT}}
-           main_branch_name: "main"
+           main_branch_name: "master"
            develop_branch_name: "develop"
