@@ -29,7 +29,6 @@ jobs:
 
         uses: samarthdd/tagging@v0.1.3
         with:
-           token: ${{secrets.GITHUBPAT}}
            GITHUBPAT: ${{secrets.GITHUBPAT}}
            main_branch_name: "main"
            develop_branch_name: "develop"
