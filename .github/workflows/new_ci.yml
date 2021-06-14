@@ -27,7 +27,7 @@ jobs:
       - uses: actions/checkout@v2
       - id: foo
 
-        uses: samarthdd/tagging@v0.1.1
+        uses: samarthdd/tagging@latest
         with:
            token: ${{secrets.GITHUBPAT}}
            GITHUBPAT: ${{secrets.GITHUBPAT}}
