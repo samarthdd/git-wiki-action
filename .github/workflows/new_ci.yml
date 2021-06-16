@@ -8,7 +8,7 @@ on:
   pull_request:
     branches:
       - master
-      - samarthdd-patch-2
+      - develop
     types: [closed]
     paths-ignore:
       - '.github/workflows/auto_tagging.yml'
