@@ -2,9 +2,6 @@
 
 set -euo pipefail
 
-
-
-
 function debug() {
     echo "::debug file=${BASH_SOURCE[0]},line=${BASH_LINENO[0]}::$1"
 }
