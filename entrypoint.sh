@@ -87,3 +87,5 @@ debug "Committing and pushing changes"
 
 rm -rf "$tmp_dir"
 exit 0
+
+
