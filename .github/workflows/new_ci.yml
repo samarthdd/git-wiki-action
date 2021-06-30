@@ -1,4 +1,4 @@
-name: Auto tagging and release
+name: Auto tagging and release 123
 
 on:
   # Triggers the workflow pull request events but only for the main and develop branch
