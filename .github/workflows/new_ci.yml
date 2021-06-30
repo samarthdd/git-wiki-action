@@ -17,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - id: auto_tagging
-        uses: samarthdd/tagging@v0.4.0
+        uses: samarthdd/tagging@v0.4.1
         with:
            GITHUBPAT: ${{secrets.GITHUBPAT}}
            main_branch_name: "master"
