@@ -4,7 +4,7 @@ on:
   # Triggers the workflow pull request events but only for the main and develop branch
   pull_request:
     branches:
-      - main
+      - master
       - develop
     types: [closed]
     paths-ignore:
@@ -20,5 +20,5 @@ jobs:
         uses: k8-proxy/auto-tagging@v0.0.1
         with:
            GITHUBPAT: ${{secrets.GITHUBPAT}}
-           main_branch_name: "main"
+           main_branch_name: "master"
            develop_branch_name: "develop"
